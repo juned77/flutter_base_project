@@ -1,11 +1,10 @@
-import 'package:flutter_base_app/src/app/screens/main_screen/main_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/res/app_colors.dart';
 import 'package:flutter_base_app/src/utils/constants.dart';
-
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth_screens/signup_screen.dart';
+import 'main_screen/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String id = '/';

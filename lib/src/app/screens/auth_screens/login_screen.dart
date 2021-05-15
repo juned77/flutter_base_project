@@ -1,15 +1,14 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/app/common/custom_text_field.dart';
 import 'package:flutter_base_app/src/app/common/progress_dialog.dart';
 import 'package:flutter_base_app/src/app/common/text_widget.dart';
-import 'package:flutter_base_app/src/app/screens/auth_screens/auth_models.dart';
-import 'package:flutter_base_app/src/app/screens/auth_screens/password_recovery.dart';
 import 'package:flutter_base_app/src/res/app_colors.dart';
 import 'package:flutter_base_app/src/utils/constants.dart';
-import 'package:flutter/material.dart';
 
-
+import 'auth_models.dart';
+import 'password_recovery.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = '/LoginScreen';
@@ -20,7 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   ValueNotifier errorStringNotifier = ValueNotifier('');
   LoginModel loginModel = LoginModel();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

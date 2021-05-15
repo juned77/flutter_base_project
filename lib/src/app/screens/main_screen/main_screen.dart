@@ -1,9 +1,10 @@
+
+
+import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/app/common/text_widget.dart';
 import 'package:flutter_base_app/src/app/screens/auth_screens/signup_screen.dart';
 import 'package:flutter_base_app/src/res/app_colors.dart';
 import 'package:flutter_base_app/src/utils/constants.dart';
-
-import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = '/MainScreen';

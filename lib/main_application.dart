@@ -1,10 +1,11 @@
-import 'package:flutter_base_app/src/app/common/text_widget.dart';
-import 'package:flutter_base_app/src/app/screens/splash.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'routes/custom_router.dart';
 
+import 'src/app/common/text_widget.dart';
+import 'src/app/screens/splash.dart';
 import 'src/res/app_colors.dart';
 
 class MainApplication extends StatefulWidget {

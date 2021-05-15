@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter_base_app/main_application.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/app/services/locator.dart';
+
+import 'main_application.dart';
+import 'src/app/services/locator.dart';
 
 void main() {
   runZonedGuarded(() async {
