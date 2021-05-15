@@ -7,7 +7,7 @@ import 'package:flutter_base_app/src/app/common/progress_dialog.dart';
 
 import 'package:flutter_base_app/src/utils/constants.dart';
 
-import '../../../shelf.dart';
+import '../../../common_imports.dart';
 import 'auth_models.dart';
 import 'password_recovery.dart';
 

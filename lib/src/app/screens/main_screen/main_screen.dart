@@ -6,7 +6,7 @@ import 'package:flutter_base_app/src/app/screens/auth_screens/signup_screen.dart
 
 import 'package:flutter_base_app/src/utils/constants.dart';
 
-import '../../../shelf.dart';
+import '../../../common_imports.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = '/MainScreen';

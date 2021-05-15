@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'shelf.dart';
+import 'common_imports.dart';
 import 'app/screens/splash.dart';
 
 import 'routes/custom_router.dart';
