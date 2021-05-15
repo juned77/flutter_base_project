@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'main_application.dart';
+import 'src/main_application.dart';
 import 'src/app/services/locator.dart';
 
 void main() {

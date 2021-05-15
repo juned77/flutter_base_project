@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/res/app_colors.dart';
+
 import 'package:flutter_base_app/src/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../shelf.dart';
 import 'auth_screens/signup_screen.dart';
 import 'main_screen/main_screen.dart';
 

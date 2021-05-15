@@ -1,8 +1,9 @@
 //-------------------Pref Keys--------------------------
 
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/app/common/text_widget.dart';
-import 'package:flutter_base_app/src/res/app_colors.dart';
+
+import '../shelf.dart';
+
 
 class PrefKeys {
   static const SET_SELECTED_LANGUAGE = 'SET_SELECTED_LANGUAGE';
