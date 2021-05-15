@@ -1,0 +1,171 @@
+import 'package:flutter/widgets.dart';
+
+class SizeConfig {
+  static MediaQueryData _mediaQueryData;
+  static double screenWidth;
+  static double screenHeight;
+  static double blockSizeHorizontal;
+  static double blockSizeVertical;
+
+  static double _safeAreaHorizontal;
+  static double _safeAreaVertical;
+  static double safeBlockHorizontal;
+  static double safeBlockVertical;
+
+  //sizes for all screens
+  static double size_1;
+  static double size_2;
+  static double size_3;
+  static double size_4;
+  static double size_5;
+  static double size_6;
+  static double size_7;
+  static double size_8;
+  static double size_9;
+  static double size_10;
+  static double size_12;
+  static double size_12_5;
+  static double size_14;
+  static double size_15;
+  static double size_16;
+  static double size_18;
+  static double size_20;
+  static double size_22;
+  static double size_24;
+  static double size_25;
+  static double size_26;
+  static double size_28;
+  static double size_30;
+  static double size_32;
+  static double size_34;
+  static double size_36;
+  static double size_37_5;
+  static double size_40;
+  static double size_42;
+  static double size_45;
+  static double size_50;
+  static double size_54;
+  static double size_60;
+  static double size_70;
+  static double size_75;
+  static double size_80;
+  static double size_85;
+  static double size_90;
+  static double size_95;
+  static double size_100;
+  static double size_120;
+  static double size_140;
+  static double size_150;
+  static double size_160;
+  static double size_170;
+  static double size_180;
+  static double size_200;
+  static double size_220;
+  static double size_250;
+  static double size_280;
+  static double size_300;
+  static double size_400;
+
+  //fonts sizes for all screens
+  static double font_10;
+  static double font_12;
+  static double font_14;
+  static double font_16;
+  static double font_18;
+  static double font_20;
+  static double font_22;
+  static double font_25;
+  static double font_24;
+  static double font_26;
+  static double font_28;
+  static double font_30;
+  static double font_32;
+  static double font_34;
+  static double font_36;
+  static double font_40;
+
+  void init(BuildContext context) {
+    _mediaQueryData = MediaQuery.of(context);
+    screenWidth = _mediaQueryData.size.width;
+    screenHeight = _mediaQueryData.size.height;
+    blockSizeHorizontal = screenWidth / 100;
+    blockSizeVertical = screenHeight / 100;
+
+    _safeAreaHorizontal = _mediaQueryData.padding.left + _mediaQueryData.padding.right;
+    _safeAreaVertical = _mediaQueryData.padding.top + _mediaQueryData.padding.bottom;
+    safeBlockHorizontal = (screenWidth - _safeAreaHorizontal) / 100;
+    safeBlockVertical = (screenHeight - _safeAreaVertical) / 100;
+
+    //sizes for all screens
+    size_1 = safeBlockHorizontal * 0.25;
+    size_2 = safeBlockHorizontal * 0.5;
+    size_3 = safeBlockHorizontal * 0.75;
+    size_4 = safeBlockHorizontal * 1;
+    size_5 = safeBlockHorizontal * 1.25;
+    size_6 = safeBlockHorizontal * 1.5;
+    size_7 = safeBlockHorizontal * 1.75;
+    size_8 = safeBlockHorizontal * 2.0;
+    size_9 = safeBlockHorizontal * 2.25;
+    size_10 = safeBlockHorizontal * 2.5;
+    size_12 = safeBlockHorizontal * 3;
+    size_12_5 = safeBlockHorizontal * 3.125;
+    size_14 = safeBlockHorizontal * 3.5;
+    size_15 = safeBlockHorizontal * 3.75;
+    size_16 = safeBlockHorizontal * 4;
+    size_18 = safeBlockHorizontal * 4.5;
+    size_20 = safeBlockHorizontal * 5;
+    size_22 = safeBlockHorizontal * 5.5;
+    size_24 = safeBlockHorizontal * 6;
+    size_25 = safeBlockHorizontal * 6.25;
+    size_26 = safeBlockHorizontal * 6.5;
+    size_28 = safeBlockHorizontal * 7;
+    size_30 = safeBlockHorizontal * 7.5;
+    size_32 = safeBlockHorizontal * 8;
+    size_34 = safeBlockHorizontal * 8.5;
+    size_36 = safeBlockHorizontal * 9;
+    size_37_5 = safeBlockHorizontal * 9.36;
+    size_40 = safeBlockHorizontal * 10;
+    size_42 = safeBlockHorizontal * 10.5;
+    size_45 = safeBlockHorizontal * 11.25;
+    size_50 = safeBlockHorizontal * 12.5;
+    size_54 = safeBlockHorizontal * 13.5;
+    size_60 = safeBlockHorizontal * 15;
+    size_70 = safeBlockHorizontal * 17.5;
+    size_75 = safeBlockHorizontal * 18.75;
+    size_80 = safeBlockHorizontal * 20;
+    size_85 = safeBlockHorizontal * 21.25;
+    size_90 = safeBlockHorizontal * 22.5;
+    size_95 = safeBlockHorizontal * 23.75;
+    size_100 = safeBlockHorizontal * 25;
+    size_120 = safeBlockHorizontal * 30;
+    size_140 = safeBlockHorizontal * 35;
+    size_150 = safeBlockHorizontal * 37.5;
+    size_160 = safeBlockHorizontal * 40;
+    size_170 = safeBlockHorizontal * 42.5;
+    size_180 = safeBlockHorizontal * 45;
+    size_200 = safeBlockHorizontal * 50;
+    size_220 = safeBlockHorizontal * 55;
+    size_250 = safeBlockHorizontal * 62.5;
+    size_280 = safeBlockHorizontal * 70;
+    size_300 = safeBlockHorizontal * 75;
+    size_400 = safeBlockHorizontal * 100;
+
+    //fonts sizes for all screens
+    font_10 = safeBlockHorizontal * 2.5;
+    font_12 = safeBlockHorizontal * 3;
+    font_14 = safeBlockHorizontal * 3.5;
+    font_16 = safeBlockHorizontal * 4;
+    font_18 = safeBlockHorizontal * 4.5;
+    font_20 = safeBlockHorizontal * 5;
+    font_22 = safeBlockHorizontal * 5.5;
+    font_25 = safeBlockHorizontal * 5.5;
+    font_24 = safeBlockHorizontal * 6;
+    font_26 = safeBlockHorizontal * 6.5;
+    font_28 = safeBlockHorizontal * 7;
+    font_30 = safeBlockHorizontal * 7.5;
+    font_32 = safeBlockHorizontal * 8;
+    font_34 = safeBlockHorizontal * 8.5;
+    font_36 = safeBlockHorizontal * 9;
+    font_40 = safeBlockHorizontal * 10;
+  }
+}
