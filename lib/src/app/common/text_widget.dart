@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 class TextWidget extends StatelessWidget {
   final String text;
   final double textSize;
-  final TextStyle style;
+  final TextStyle? style;
   final EdgeInsets padding;
   final EdgeInsets margin;
-  final Decoration decoration;
+  final Decoration? decoration;
   final Color color;
   final Color backgroundColor;
-  final TextOverflow overflow;
-  final int maxLines;
+  final TextOverflow? overflow;
+  final int? maxLines;
   final FontWeight fontWeight;
   final TextAlign textAlign;
   final String fontFamily;
   final TextDecoration textDecoration;
+  final double? containerWidth;
 
-  TextWidget(
-      {@required this.text,
+  const TextWidget(
+      {Key? key,
+      required this.text,
       this.textSize = 12,
       this.style,
       this.maxLines,
@@ -26,11 +28,13 @@ class TextWidget extends StatelessWidget {
       this.color = Colors.black,
       this.decoration,
       this.overflow,
+      this.containerWidth,
       this.fontWeight = FontWeight.normal,
       this.backgroundColor = Colors.transparent,
       this.textAlign = TextAlign.start,
       this.fontFamily = FontStyles.fontName,
-      this.textDecoration = TextDecoration.none});
+      this.textDecoration = TextDecoration.none})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +42,7 @@ class TextWidget extends StatelessWidget {
       decoration: decoration,
       padding: padding,
       margin: margin,
+      width: containerWidth,
       child: Text(
         text,
         overflow: overflow,
@@ -59,7 +64,7 @@ class TextWidget extends StatelessWidget {
 
 class FontStyles {
   static FontWeight thin = FontWeight.w100;
-  static const String fontName = 'Poppins';
+  static const String fontName = 'Lato';
   static FontWeight extraLight = FontWeight.w200;
   static FontWeight light = FontWeight.w300;
   static FontWeight regular = FontWeight.w400;

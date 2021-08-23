@@ -5,6 +5,7 @@ import 'common_imports.dart';
 import 'app/screens/splash.dart';
 
 import 'routes/custom_router.dart';
+import 'utils/constants.dart';
 
 class MainApplication extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _MainApplicationState extends State<MainApplication> {
     startUpLogic();
     return MaterialApp(
       title: 'Authentication App',
+      navigatorKey: NavKey.navKey,
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
         backgroundColor: Colors.white,

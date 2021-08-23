@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'text_widget.dart';
 
 class CommonFuture<T> extends StatelessWidget {
-  // final Widget successWidget;
   final Widget Function(T data) data;
   final Future<T> future;
-  final T initialData;
-  const CommonFuture({this.future, this.initialData, this.data});
+  final T? initialData;
+  final bool showLoadingWidget;
+  const CommonFuture({
+    Key? key,
+    required this.data,
+    required this.future,
+    this.initialData,
+    required this.showLoadingWidget,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<T>(
@@ -16,13 +22,15 @@ class CommonFuture<T> extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<T> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            return TextWidget(text: 'Error Occured');
+            return const TextWidget(text: 'Error Occured');
           }
-          return data(snapshot.data);
+          return data(snapshot.data!);
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return showLoadingWidget
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : data(initialData!);
         }
       },
     );

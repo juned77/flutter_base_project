@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../common_imports.dart';
 
-
 class PrefKeys {
   static const SET_SELECTED_LANGUAGE = 'SET_SELECTED_LANGUAGE';
   static const LOGOUT = 'LOGOUT';
@@ -24,16 +23,20 @@ class PrefKeys {
   static const EMAIL = "EMAIL";
   static const FIREBASE_NOTIFICATION_ID = "FIREBASE_NOTIFICATION_ID";
   static const PINCODE = "PINCODE";
-  static const API_TOKEN = "API_TOKEN";
+  static const AUTH_TOKEN = "AUTH_TOKEN";
   static const FIREBASE_NOTIFICATION_TOKEN = 'FIREBASE_NOTIFICATION_TOKEN';
   static const LOG_IN_EMAIL = "LOG_IN_EMAIL";
   static const LOG_IN_PASS = "LOG_IN_PASS";
 }
 
+class NavKey {
+  static final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+}
+
 final emailPattern =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-navigateToNamedRoute(BuildContext context, String routeName, [Object arguments]) {
+navigateToNamedRoute(BuildContext context, String routeName, [Object? arguments]) {
   FocusScopeNode currentFocus = FocusScope.of(context);
 
   if (!currentFocus.hasPrimaryFocus) {
@@ -42,7 +45,7 @@ navigateToNamedRoute(BuildContext context, String routeName, [Object arguments])
   Navigator.pushNamed(context, routeName, arguments: arguments);
 }
 
-pushNamedAndRemoveUntil(BuildContext context, String routeName, String removeUntilRoute, [Object arguments]) {
+pushNamedAndRemoveUntil(BuildContext context, String routeName, String removeUntilRoute, [Object? arguments]) {
   FocusScopeNode currentFocus = FocusScope.of(context);
 
   if (!currentFocus.hasPrimaryFocus) {

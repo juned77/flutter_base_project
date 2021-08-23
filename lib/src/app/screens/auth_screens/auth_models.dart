@@ -1,4 +1,4 @@
 class LoginModel {
-  String userEmail;
-  String userPassword;
+  String? userEmail;
+  String? userPassword;
 }

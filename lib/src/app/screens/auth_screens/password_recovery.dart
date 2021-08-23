@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/app/common/custom_text_field.dart';
-import 'package:flutter_base_app/src/app/common/progress_dialog.dart';
 
 import 'package:flutter_base_app/src/utils/constants.dart';
 
@@ -48,7 +47,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                             SizedBox(height: 56),
                             ValueListenableBuilder(
                               valueListenable: errorStringNotifier,
-                              builder: (context, value, child) {
+                              builder: (context, dynamic value, child) {
                                 return Container(
                                   // color: Colors.grey[300],
                                   constraints: BoxConstraints(minHeight: 30),
@@ -88,7 +87,6 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                                   if (validation(loginModel)) {
                                     errorStringNotifier.value = '';
                                     removeTextFieldFocus(context);
-                                    showProgressDialog(context);
                                   }
                                 },
                                 child: TextWidget(
@@ -158,11 +156,11 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
 
   bool validation(LoginModel loginModel) {
     var regExp = new RegExp(emailPattern);
-    if (loginModel.userEmail == null || loginModel.userEmail.isEmpty) {
+    if (loginModel.userEmail == null || loginModel.userEmail!.isEmpty) {
       // showSnackBar('Please enter email', context);
       errorStringNotifier.value = 'Please enter email';
       return false;
-    } else if (!regExp.hasMatch(loginModel.userEmail)) {
+    } else if (!regExp.hasMatch(loginModel.userEmail!)) {
       // showSnackBar('Please enter valid mail address', context);
       errorStringNotifier.value = 'Please enter valid mail address';
       return false;

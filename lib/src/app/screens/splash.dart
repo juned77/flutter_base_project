@@ -14,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
     goToNext(context);
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   goToNext(BuildContext context) async {
     prefs = await SharedPreferences.getInstance();
-    bool isLogin = prefs.getBool(PrefKeys.IS_LOGGED_IN);
+    bool? isLogin = prefs.getBool(PrefKeys.IS_LOGGED_IN);
     // String userName = prefs.getString(PrefKeys.USER_NAME);
     // String userCompanyName = prefs.getString(PrefKeys.COMPANY_NAME);
     // int userCompanyId = prefs.getInt(PrefKeys.COMPANY_ID);

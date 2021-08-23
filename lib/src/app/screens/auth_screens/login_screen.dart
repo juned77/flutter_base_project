@@ -2,8 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/app/common/custom_text_field.dart';
-import 'package:flutter_base_app/src/app/common/progress_dialog.dart';
-
 
 import 'package:flutter_base_app/src/utils/constants.dart';
 
@@ -47,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               SizedBox(height: 92),
                               ValueListenableBuilder(
                                 valueListenable: errorStringNotifier,
-                                builder: (context, value, child) {
+                                builder: (context, dynamic value, child) {
                                   return Container(
                                     // color: Colors.grey[300],
                                     constraints: BoxConstraints(minHeight: 30),
@@ -66,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 keyboardType: TextInputType.emailAddress,
                                 maxLength: 30,
                                 obscureText: false,
-                                onChanged: (String string) {
+                                onChanged: (String? string) {
                                   loginModel.userEmail = string;
                                 },
                               ),
@@ -77,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 keyboardType: TextInputType.visiblePassword,
                                 obscureText: true,
                                 isPasswordVisiblityEnable: true,
-                                onChanged: (String string) {
+                                onChanged: (String? string) {
                                   loginModel.userPassword = string;
                                 },
                               ),
@@ -91,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     if (validation(loginModel)) {
                                       errorStringNotifier.value = '';
                                       removeTextFieldFocus(context);
-                                      showProgressDialog(context);
+
                                       // authRepo.loginUser(loginModel, context, errorStringNotifier);
                                     }
                                   },
@@ -168,7 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    showProgressDialog(context);
                                     // authRepo.signInWithGoogle(context);
                                   },
                                   child: TextWidget(
@@ -218,15 +215,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool validation(LoginModel loginModel) {
     var regExp = new RegExp(emailPattern);
-    if (loginModel.userEmail == null || loginModel.userEmail.isEmpty) {
+    if (loginModel.userEmail == null || loginModel.userEmail!.isEmpty) {
       // showSnackBar('Please enter email', context);
       errorStringNotifier.value = 'Please enter email';
       return false;
-    } else if (!regExp.hasMatch(loginModel.userEmail)) {
+    } else if (!regExp.hasMatch(loginModel.userEmail!)) {
       // showSnackBar('Please enter valid mail address', context);
       errorStringNotifier.value = 'Please enter valid mail address';
       return false;
-    } else if (loginModel.userPassword == null || loginModel.userPassword.isEmpty) {
+    } else if (loginModel.userPassword == null || loginModel.userPassword!.isEmpty) {
       // showSnackBar('Please enter pasword', context);
       errorStringNotifier.value = 'Please enter pasword';
       return false;
