@@ -1,14 +1,16 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'src/app/services/push_notification_service.dart';
 import 'src/main_application.dart';
-import 'src/app/services/locator.dart';
 
 void main() {
   runZonedGuarded(() async {
-    setupLocator();
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    await PushNotificationService().setupInteractedMessage();
     runApp(MainApplication());
   }, (error, stack) {
     print('main error - $error');

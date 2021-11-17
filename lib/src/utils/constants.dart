@@ -1,6 +1,7 @@
 //-------------------Pref Keys--------------------------
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common_imports.dart';
 
@@ -18,6 +19,7 @@ class PrefKeys {
   static const COMPANY_ID = "COMPANY_ID";
   static const COMPANY_NAME = "COMPANY_NAME";
   static const USER_DATA = "USER_DATA";
+  static const ACCESS_TOKEN = "ACCESS_TOKEN";
 
   static const DEVICE_ID = "DEVICE_ID";
   static const EMAIL = "EMAIL";
@@ -27,6 +29,15 @@ class PrefKeys {
   static const FIREBASE_NOTIFICATION_TOKEN = 'FIREBASE_NOTIFICATION_TOKEN';
   static const LOG_IN_EMAIL = "LOG_IN_EMAIL";
   static const LOG_IN_PASS = "LOG_IN_PASS";
+}
+
+extension SharedPrefExtsn on SharedPreferences {
+  resetPrefs() {
+    // bool? skip = this.getBool(PrefKeys.INTRO_SKIPPED);
+
+    this.clear();
+    // this.setBool(PrefKeys.INTRO_SKIPPED, skip!);
+  }
 }
 
 class NavKey {

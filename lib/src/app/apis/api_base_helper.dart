@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter_base_app/src/app/apis/simplified_uri.dart';
+import 'package:flutter_base_app/src/app/screens/auth_screens/login_screen.dart';
 import 'package:flutter_base_app/src/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,121 +13,327 @@ import 'api_config.dart';
 
 class ApiBaseHelper {
   static String baseUrl = BASE_URL;
-  late SharedPreferences sharedPreferences;
 
   static final ApiBaseHelper _singleton = ApiBaseHelper._internal();
 
   factory ApiBaseHelper() {
     return _singleton;
   }
+  SharedPreferences? _sharedPreferences;
 
   ApiBaseHelper._internal() {
-    init();
+    _init();
   }
 
-  init() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+  _init() async {
+    _sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  Future<dynamic> getApiCall(String url) async {
-    var responseJson;
+  getAddressFromGoogle(
+      {required Map<String, dynamic> jsonData,
+      required Function(dynamic data) onSucess,
+      required Function(dynamic data) onFailure}) async {
+    var apiResponse;
+
+    final uri = Uri.https('maps.googleapis.com', 'maps/api/geocode/json', jsonData);
+    try {
+      final http.Response response = await http.post(
+        uri,
+        body: jsonEncode(jsonData),
+      );
+
+      try {
+        apiResponse = _returnResponse(response: response);
+        onSucess(apiResponse);
+      } catch (e) {
+        apiResponse = json.decode(response.body.toString());
+        onFailure(apiResponse);
+      }
+    } on SocketException {
+      Map<String, String> jsonData = {'message': 'No Internet connection'};
+      await Future.delayed(const Duration(seconds: 2));
+      onFailure(jsonData);
+      // throw FetchDataException('No Internet connection');
+    }
+  }
+
+  getApiCall(
+      {required String url,
+      Map<String, dynamic>? queryParameters,
+      Function(dynamic data)? onSucess,
+      Function(dynamic data)? onFailure,
+      Function(bool loading)? loading,
+      SharedPreferences? sharedPreferences}) async {
+    if (_sharedPreferences == null) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+    }
+    String? xAuthToken = _sharedPreferences!.getString(PrefKeys.ACCESS_TOKEN);
+
+    if (xAuthToken != null) {
+      xAuthToken = 'Bearer ' + xAuthToken;
+    }
+
+    var apiResponse;
     log('get -${baseUrl + url}');
+    loading?.call(true);
+
+    final Uri uri = SimplifiedUri.uri(baseUrl + url, queryParameters);
+
     try {
-      final response = await http.get(Uri.parse(baseUrl + url), headers: <String, String>{
-        'x-api-key': 'FdTRZTbNLC1B',
-      });
-      responseJson = _returnResponse(response: response);
+      final http.Response response = await http.get(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'authorization': xAuthToken ?? '',
+          'deviceType': 'mobile',
+        },
+      );
+
+      try {
+        apiResponse = _returnResponse(response: response);
+        loading?.call(false);
+        onSucess?.call(apiResponse);
+        return apiResponse;
+      } on UnauthorisedException {
+        loading?.call(false);
+        _sharedPreferences!.resetPrefs();
+        NavKey.navKey.currentState!.pushNamedAndRemoveUntil(LoginScreen.id, (route) => false);
+      } catch (e) {
+        apiResponse = json.decode(response.body.toString());
+        loading?.call(false);
+        onFailure?.call(apiResponse);
+        return apiResponse;
+      } finally {}
     } on SocketException {
-      throw FetchDataException('No Internet connection');
+      loading?.call(false);
+      Map<String, String> jsonData = {'message': 'No Internet connection'};
+      await Future.delayed(const Duration(seconds: 2));
+      onFailure?.call(jsonData);
     }
-    return responseJson;
   }
 
-  Future<dynamic> deleteApiCall(String url) async {
-    var responseJson;
+  getFakeApiCall(
+      {required String url,
+      Map<String, dynamic>? queryParameters,
+      Function(dynamic data)? onSucess,
+      Function(dynamic data)? onFailure,
+      Function(bool loading)? loading,
+      SharedPreferences? sharedPreferences}) async {
+    if (_sharedPreferences == null) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+    }
+    String? xAuthToken = _sharedPreferences!.getString(PrefKeys.ACCESS_TOKEN);
+
+    if (xAuthToken != null) {
+      xAuthToken = 'Bearer ' + xAuthToken;
+    }
+
+    var apiResponse;
+    log('get -$url');
+    loading?.call(true);
+
+    final Uri uri = SimplifiedUri.uri(url, queryParameters);
+
+    try {
+      final http.Response response = await http.get(
+        uri,
+        headers: <String, String>{'app-id': '613ef7c522d11d1ac74534ff'},
+      );
+
+      try {
+        apiResponse = _returnResponse(response: response);
+        loading?.call(false);
+        onSucess?.call(apiResponse);
+        return apiResponse;
+      } on UnauthorisedException {
+        loading?.call(false);
+        _sharedPreferences!.resetPrefs();
+        NavKey.navKey.currentState!.pushNamedAndRemoveUntil(LoginScreen.id, (route) => false);
+      } catch (e) {
+        apiResponse = json.decode(response.body.toString());
+        loading?.call(false);
+        onFailure?.call(apiResponse);
+        return apiResponse;
+      } finally {}
+    } on SocketException {
+      loading?.call(false);
+      Map<String, String> jsonData = {'message': 'No Internet connection'};
+      await Future.delayed(const Duration(seconds: 2));
+      onFailure?.call(jsonData);
+    }
+  }
+
+  deleteApiCall(
+      {required String url,
+      Map<String, dynamic>? queryParameters,
+      Function(dynamic data)? onSucess,
+      Function(dynamic data)? onFailure,
+      Function(bool loading)? loading,
+      SharedPreferences? sharedPreferences}) async {
+    if (_sharedPreferences == null) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+    }
+    String? xAuthToken = _sharedPreferences!.getString(PrefKeys.ACCESS_TOKEN);
+
+    if (xAuthToken != null) {
+      xAuthToken = 'Bearer ' + xAuthToken;
+    }
+
+    var apiResponse;
     log('delete -${baseUrl + url}');
+    loading?.call(true);
+
     try {
-      final response = await http.delete(Uri.parse(baseUrl + url), headers: <String, String>{});
-      responseJson = _returnResponse(response: response);
+      final http.Response response = await http.delete(
+        Uri.parse(baseUrl + url),
+        body: jsonEncode(queryParameters ?? {}),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'authorization': xAuthToken ?? '',
+          'deviceType': 'mobile',
+        },
+      );
+
+      try {
+        apiResponse = _returnResponse(response: response);
+        loading?.call(false);
+        onSucess?.call(apiResponse);
+        return apiResponse;
+      } on UnauthorisedException {
+        loading?.call(false);
+        _sharedPreferences!.resetPrefs();
+        NavKey.navKey.currentState!.pushNamedAndRemoveUntil(LoginScreen.id, (route) => false);
+      } catch (e) {
+        apiResponse = json.decode(response.body.toString());
+        loading?.call(false);
+        onFailure?.call(apiResponse);
+        return apiResponse;
+      } finally {}
     } on SocketException {
-      throw FetchDataException('No Internet connection');
+      loading?.call(false);
+      Map<String, String> jsonData = {'message': 'No Internet connection'};
+      await Future.delayed(const Duration(seconds: 2));
+      onFailure?.call(jsonData);
     }
-    return responseJson;
   }
 
-  Future<dynamic> postApiCall(String url, Map<String, dynamic> jsonData) async {
-    var responseJson;
-    /* SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString(PrefKeys.AUTHENTICATION);
-    var userId = prefs.getString(PrefKeys.USER_ID); */
+  postApiCall(
+      {required String url,
+      Map<String, dynamic>? jsonData,
+      Function(dynamic data)? onSucess,
+      Function(dynamic data)? onFailure,
+      Function(bool loading)? loading}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? xAuthToken = prefs.getString(PrefKeys.ACCESS_TOKEN);
+
+    if (xAuthToken != null) {
+      xAuthToken = 'Bearer ' + xAuthToken;
+    }
+
+    var apiResponse;
     log('post -${baseUrl + url}');
+    loading?.call(true);
+
     try {
       final http.Response response = await http.post(
         Uri.parse(baseUrl + url),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          'authorization': xAuthToken ?? '',
         },
         body: jsonEncode(jsonData),
       );
 
       try {
-        responseJson = _returnResponse(response: response);
+        apiResponse = _returnResponse(response: response);
+        onSucess?.call(apiResponse);
+        return apiResponse;
       } catch (e) {
-        // prefs.setBool(PrefKeys.IS_LOGGED_IN, false);
-
-        // locator<NavigationService>().pushNamedAndRemoveUntil(LoginScreen.id);
+        apiResponse = json.decode(response.body.toString());
+        onFailure?.call(apiResponse);
+        return apiResponse;
+      } finally {
+        loading?.call(false);
       }
     } on SocketException {
-      throw FetchDataException('No Internet connection');
+      Map<String, String> jsonData = {'message': 'No Internet connection'};
+      await Future.delayed(const Duration(seconds: 2));
+      onFailure?.call(jsonData);
+      // throw FetchDataException('No Internet connection');
     }
-    return responseJson;
   }
 
-  Future<dynamic> putApiCall(String url, Map<String, dynamic> jsonData) async {
-    var responseJson;
+  putApiCall(
+      {required String url,
+      required Map<String, dynamic> jsonData,
+       Function(dynamic data)? onSucess,
+       Function(dynamic data)? onFailure,
+      Function(bool isLoading)? loading}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? xAuthToken = prefs.getString(PrefKeys.ACCESS_TOKEN);
+
+    if (xAuthToken != null) {
+      xAuthToken = 'Bearer ' + xAuthToken;
+    }
+
+    var apiResponse;
     log('put -${baseUrl + url}');
     try {
       final http.Response response = await http.put(
         Uri.parse(baseUrl + url),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
+          'authorization': xAuthToken ?? '',
+          'web': 'web',
+          'deviceToken': '',
         },
         body: jsonEncode(jsonData),
       );
 
       try {
-        responseJson = _returnResponse(response: response);
+        apiResponse = _returnResponse(response: response);
+        onSucess?.call(apiResponse);
       } catch (e) {
-        // prefs.setBool(PrefKeys.IS_LOGGED_IN, false);
-
-        // locator<NavigationService>().pushNamedAndRemoveUntil(LoginScreen.id);
+        apiResponse = json.decode(response.body.toString());
+        onFailure?.call(apiResponse);
       }
     } on SocketException {
+      Map<String, String> jsonData = {'message': 'No Internet connection'};
+      await Future.delayed(const Duration(seconds: 2));
+      onFailure?.call(jsonData);
       // throw FetchDataException('No Internet connection');
-      responseJson = {"message": "No Internet connection"};
     }
-    return responseJson;
   }
 
   callMultipartApi(
       {required String apiName,
       required Map<String, String> requestBody,
+      Map<String, String>? headers,
       File? image,
       String? fileParamName,
-      required Function(dynamic data) onSucess,
-      required Function(dynamic data) onFailure,
-      required Function(bool loading) loading}) async {
-    String? xAuthToken = sharedPreferences.getString(PrefKeys.AUTH_TOKEN);
+      String? requestType,
+       Function(dynamic onSucessJson)? onSucess,
+       Function(dynamic onFailureJson)? onFailure,
+       Function(bool isLoading)? loading}) async {
+    if (_sharedPreferences == null) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+    }
 
-    loading(true);
-    var request = http.MultipartRequest('POST', Uri.parse(BASE_URL + apiName));
-    request.headers.addAll(<String, String>{
-      'Content-Type': 'multipart/form-data',
-      'authorization': xAuthToken ?? '',
-      'deviceType': 'mobile',
-    });
-    if (fileParamName != null || image != null) {
-      request.files.add(http.MultipartFile(fileParamName!, image!.readAsBytes().asStream(), image.lengthSync(),
+    String? xAuthToken = _sharedPreferences!.getString(PrefKeys.ACCESS_TOKEN);
+
+    if (xAuthToken != null) {
+      xAuthToken = 'Bearer ' + xAuthToken;
+    }
+
+    loading?.call(true);
+    var request = http.MultipartRequest(requestType ?? 'POST', Uri.parse(BASE_URL + apiName));
+    request.headers.addAll(headers ??
+        <String, String>{
+          'Content-Type': 'multipart/form-data',
+          'authorization': xAuthToken ?? '',
+        });
+    if (fileParamName != null && image != null) {
+      request.files.add(http.MultipartFile(fileParamName, image.readAsBytes().asStream(), image.lengthSync(),
           filename: image.path.split("/").last));
     }
 
@@ -135,20 +343,28 @@ class ApiBaseHelper {
     http.Response response = await http.Response.fromStream(await request.send());
     try {
       apiResponse = _returnResponse(response: response);
+      loading?.call(false);
 
-      onSucess(apiResponse);
+      onSucess?.call(apiResponse);
     } catch (e) {
       apiResponse = json.decode(response.body.toString());
+      loading?.call(false);
 
-      onFailure(apiResponse);
+      onFailure?.call(apiResponse);
     } finally {
-      loading(false);
+      loading?.call(false);
     }
+
+    return apiResponse;
   }
 
   dynamic _returnResponse({required http.Response response}) {
     switch (response.statusCode) {
       case 200:
+        var responseJson = json.decode(response.body.toString());
+        // log(responseJson.toString());
+        return responseJson;
+      case 201:
         var responseJson = json.decode(response.body.toString());
         // log(responseJson.toString());
         return responseJson;
